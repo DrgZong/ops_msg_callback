@@ -14,7 +14,7 @@ from application import application
 from pw_logger import m_logger
 
 sys.path.append(os.path.abspath('.'))
-define("port", default=8088, help="run on th given port", type=int)
+define("port", default=8087, help="run on th given port", type=int)
 define('debug', default=True, help='enable debug mode')
 
 
