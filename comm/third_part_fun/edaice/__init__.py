@@ -99,7 +99,7 @@ def wx_send_test(args):
         if len(params) < 2:
             res = 'E待测发送笔试邀请参数不足'
         else:
-            res = Edaice(None, None, "7l29k4rm8i1ezrzon07n42tl7kyx7wjcn3odk24ab6z2sd4yur") \
+            res = Edaice('balloon@pingwest.com', 'Pingwest2012') \
                 .create_test(test_name=params[0], email=params[1],
                              days=params[2] if len(params) > 2 and params[2] else '7')
     else:
