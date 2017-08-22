@@ -29,11 +29,11 @@ class MsgCallback(BaseHandler):
     @run_on_executor
     def _post(self):
         try:
-            msg = json.loads(weslack_decrypt_dict(self.request.body.decode("utf-8")))
+            msg = json.loads(weslack_decrypt_dict(self.request.body))
             # 模板样式待定，先实现一种:发送简历邀请及E待测试题
             print(msg)
 
         except Exception as e:
             m_logger.info('消息格式错误：%s', str(e))
-        return {"msg": ""}
+        return ""
 
