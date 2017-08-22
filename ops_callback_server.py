@@ -34,7 +34,5 @@ def main():
 
 
 if __name__ == "__main__":
-    # import pdb; pdb.set_trace()
-    # main()
-    t = "1503369715"
-    print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(t))))
+    import pdb; pdb.set_trace()
+    main()
