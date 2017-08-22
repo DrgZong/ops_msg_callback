@@ -214,7 +214,7 @@ def wx_send_boss_invite(args):
     if not args:
         res = 'BOSS直聘发送面试邀请未获得参数'
     else:
-        params = args.split('|')
+        params = args.split(' ')
         res = send_invite(cookie={
             't': 'fPQirgQj9lzoRs',
             'wt': 'fPQirgQj9lzoRs'
