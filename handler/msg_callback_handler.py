@@ -6,13 +6,13 @@
 #  ✿╹◡╹ Buddha bless me code no bug ✿╹◡╹
 import json
 
-import time
-import tornado.web
 import tornado.gen
+import tornado.web
 from tornado.concurrent import run_on_executor
 
 from comm.weslack_fun import weslack_decrypt_dict
 from handler.base import BaseHandler
+from msg_callback_config import task
 from pw_logger import m_logger
 
 
@@ -28,23 +28,20 @@ class MsgCallback(BaseHandler):
 
     @run_on_executor
     def _post(self):
+        res = None
         try:
             msg = json.loads(weslack_decrypt_dict(self.request.body))
+            text = msg.get("text", "xxx")
+            print(text)
             # 模板样式待定，先实现一种:发送简历邀请及E待测试题
-            """
-            {'fromUserName': '@5ed299bc0c3ffc44b88bb5ebfdc0a404', 'selfRemarkName': '',
-             'Username': '@@0f4cd336633e12a7e7a52064cd1ef691f44625eb4fbade89217f57b3646f8767',
-              't': 1503369715, 'msgType': 'Text', 'chatroomName': 'Email透传测试群',
-              'fromDisplayName': '', 'msgId': '4090747206345360890', 'atSelf': False,
-              'chatroomQuanPin': 'Emailtouchuanceshiqun', 'isgroup': True, 'text': 'EE',
-               'fromNickName': '宗志龙'}
-
-            """
-            print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(int(msg.get('t', '0'))))
-                  + '   ' + msg.get("chatroomName", "xxx") + "   " + msg.get("fromNickName", "xxx") + ":"
-                  + "\n" + msg.get("text", "xxx"))
-
+            if msg.get("atSelf", False) and isinstance(text, str) and "@all" not in text.lower():
+                text_list = text.split("\n")
+                task_name = text_list[0].split(" ")[1].split(".")
+                fun = task.get(task_name[0].lower(), {}).get('default' if len(task_name) == 1 else task_name[1])
+                if fun:
+                    res = fun(text_list[1] if len(text_list) > 1 else None)
+                # else:
+                #     res = 'I do not support this operate'
         except Exception as e:
             m_logger.info('消息格式错误：%s', str(e))
-        return ""
-
+        return "" if not res else res

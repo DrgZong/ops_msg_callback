@@ -142,19 +142,19 @@ def send_invite(cookie, username, jobid='6970297', tips='', invite_time=''):
     if jobid and gid:
         if not tips:
             tips = "给你邮箱发了一个在线笔试邀请，请于邀请时间之前做完，评卷结束后我们会通知你后续面试的时间"
+        now = datetime.datetime.now()
         if invite_time:
             try:
-                dates = invite_time.split('/')
-                date = dates[0]
-                hour = int(dates[1])
-                minute = int(dates[2])
+                if len(invite_time) != 8:
+                    raise Exception('time error')
+                date = str(now.year) + '-' + invite_time[:2] + '-' + invite_time[2: 4]
+                hour = int(invite_time[4: 6])
+                minute = int(invite_time[6:])
             except Exception as e:
-                res = 'time error:%s' % str(e)
-                print('time error:%s', str(e))
+                res = str(e)
                 return res
 
         else:
-            now = datetime.datetime.now()
             date = str((now + datetime.timedelta(days=1)).date())
             hour = now.hour
             minute = now.minute
@@ -168,6 +168,8 @@ def send_invite(cookie, username, jobid='6970297', tips='', invite_time=''):
         except Exception as e:
             res = str(e)
             print('send_invite error:%s', str(e))
+    else:
+        res = '未找到对应用户'
     return res
 
 
@@ -207,10 +209,24 @@ def get_jobid(cookie, jobname):
     return res
 
 
+# 以下是微信反向操作的方法，操作成功返回None否则返回错误信息
+def wx_send_boss_invite(args):
+    if not args:
+        res = 'BOSS直聘发送面试邀请未获得参数'
+    else:
+        params = args.split('|')
+        res = send_invite(cookie={
+            't': 'fPQirgQj9lzoRs',
+            'wt': 'fPQirgQj9lzoRs'
+        }, username=params[0], invite_time=params[1] if len(params) > 1 and params[1] != '' else None,
+            tips=params[2] if len(params) > 2 and params[2] != '' else None)
+    return res
+
+
 if __name__ == '__main__':
     m_cookie = {
         't': 'fPQirgQj9lzoRs',
         'wt': 'fPQirgQj9lzoRs'
     }
-    print(send_invite(m_cookie, '王博龙', invite_time='2017-9-19/17/17'))
+    print(send_invite(m_cookie, '王博龙', invite_time='08231717'))
     # print(get_all_user(m_cookie, 1))

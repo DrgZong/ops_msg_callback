@@ -41,7 +41,7 @@ class Edaice():
         return res
 
     def create_test(self, test_name, email, user_name='面试者', phone='13330211234',
-                    is_moniter=1, days=7, theme='在线笔试邀请', other='请及时填写'):
+                    is_moniter=1, days='7', theme='在线笔试邀请', other='请及时填写'):
         """
         发送测试邀请
         :param test_name: 测试卷题目
@@ -71,6 +71,8 @@ class Edaice():
             except Exception as e:
                 res = str(e)
                 print('create_test error:', str(e))
+        else:
+            res = "E待测发送笔试题缺失参数" + ",未找到对应试卷" if not paper_id else ""
         return res
 
     def get_paper_id(self, name):
@@ -88,6 +90,20 @@ class Edaice():
                 if not res and name in paper.get("testPaperName", ""):
                     res = paper.get("testPaperId")
         return res
+
+
+# 以下是微信反向操作的方法，操作成功返回None否则返回错误信息
+def wx_send_test(args):
+    if args:
+        params = args.split('|')
+        if len(params) < 2:
+            res = 'E待测发送笔试邀请参数不足'
+        else:
+            res = Edaice(None, None, "7l29k4rm8i1ezrzon07n42tl7kyx7wjcn3odk24ab6z2sd4yur")\
+                .create_test(test_name=params[0], email=params[1], days='7' if len(params) < 3 else params[2])
+    else:
+        res = 'E待测发送笔试邀请未获得参数'
+    return res
 
 
 if __name__ == '__main__':
