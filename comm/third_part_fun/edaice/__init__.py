@@ -103,7 +103,7 @@ def wx_send_test(args):
                 .create_test(test_name=params[0], email=params[1], days='7' if len(params) < 3 else params[2])
     else:
         res = 'E待测发送笔试邀请未获得参数'
-    return res
+    return res if res else "笔试邀请发送成功"
 
 
 if __name__ == '__main__':
