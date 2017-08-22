@@ -9,7 +9,7 @@ from cryptography.fernet import Fernet
 
 # 30rWQkOzH0JBEOenusV31pGtKhhBcn2mMZB165bpkYI=  onlinetest 的密匙
 
-def weslack_decrypt_dict(secret, encrypt_str='30rWQkOzH0JBEOenusV31pGtKhhBcn2mMZB165bpkYI='):
+def weslack_decrypt_dict(encrypt_str, secret='30rWQkOzH0JBEOenusV31pGtKhhBcn2mMZB165bpkYI='):
     """
         解密数据
     """
