@@ -1,0 +1,61 @@
+version: 1
+
+loggers:
+  root:
+    level: DEBUG
+    handlers: [console,runtime_h]
+  tornado:
+    level: DEBUG
+    handlers: [console,runtime_h]
+    propagate: no
+  tornado.access:
+    level: DEBUG
+    handlers: [console, access]
+    propagate: no
+  tornado.application:
+    level: DEBUG
+    handlers: [console, error]
+    propagate: no
+  runtime:
+    level: DEBUG
+    handlers: [console,runtime_h]
+    propagate: no
+
+formatters:
+  simple:
+    format: '%(asctime)s - %(name)s - %(filename)s[%(lineno)d] - %(levelname)s - %(message)s'
+  timedRotating:
+    format: '%(asctime)s %(name)-12s %(filename)s[%(lineno)d] %(levelname)-8s - %(message)s'
+  access_fmt:
+    format: '%(asctime)s %(name)-12s %(levelname)-8s - %(message)s'
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: simple
+  access:
+    class: logging.handlers.TimedRotatingFileHandler
+    level: DEBUG
+    formatter: access_fmt
+    filename: 'logs/access.log'
+    when: 'midnight'
+    interval: 1
+    backupCount: 0
+  error:
+    class: logging.handlers.TimedRotatingFileHandler
+    level: DEBUG
+    formatter: timedRotating
+    filename: 'logs/error.log'
+    when: 'midnight'
+    interval: 1
+    backupCount: 0
+  runtime_h:
+    class: logging.handlers.TimedRotatingFileHandler
+    level: DEBUG
+    formatter: timedRotating
+    filename: 'logs/runtime.log'
+    when: 'midnight'
+    interval: 1
+    backupCount: 0
+    encoding: 'utf8'

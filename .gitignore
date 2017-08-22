@@ -1,0 +1,85 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+logs/
+wxcomm_fun/wx_ticket.init
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*,cover
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+logs/
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+*.p12
+*.csv
+*.xml
+.idea/tornado_tmpl.iml
+.idea/*
+.vscode/*
+tmp/
+*.sqlite
+weslack_config.py
+static/images/*
+log/
+dl/
+weslack_sdk/gif2.mp4
+weslack_sdk/node.dll
+weslack_sdk/wx.py
+weslack_sdk/t.gif
+weslack_sdk/wx.py
+weslack_sdk/xx.ogg
+weslack_sdk/xxx.mp4
+weslack_sdk/nginx用户手册.pdf
+weslack_sdk/微信抓取.md
+weslack_sdk/luxun.jpg
+wx_ticket.init
+*.rar
