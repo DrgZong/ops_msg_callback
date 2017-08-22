@@ -8,7 +8,7 @@ task = {
     },
     "edaice": {
         "test": wx_send_test,
-        "default": wx_send_test,
+        "default": wx_send_test,  # 格式为【试卷名(模糊)|邮箱|有效期或者不屑】
     }
 }
 
