@@ -10,6 +10,8 @@ import json
 import requests
 import time
 
+from bs4 import BeautifulSoup
+
 url_all = "https://www.zhipin.com/chat/userList.json?page={page}&_=%s" % int(time.time())  # 全部联系人
 url_new = "https://www.zhipin.com/chat/resumedirectList.json?page={page}&_=%s" % int(time.time())  # 新联系人
 url_talking = "https://www.zhipin.com/chat/userfilterlist.json?page=0&status=6&origin=-1&jobid=-1&rank=1&salary=0&experience=0&degree=0&_=%s" % int(
@@ -18,6 +20,8 @@ url_chat_history = "https://www.zhipin.com/chat/historymsg.json?gid={gid}&maxMsg
 url_get_resume = "https://www.zhipin.com/chat/requestResume.json?to={gid}&_=%s" % int(time.time() * 1000)  # 邀请投递简历
 url_get_user_info = "https://www.zhipin.com/chat/geek.json?uid={gid}"  # 获取某用户信息
 url_send_invite = "https://www.zhipin.com/bossweb/interview/invite.json"  # 发送面试邀请
+url_get_job_id = "https://www.zhipin.com/bossweb/joblist/data.json?page=1&type=0&status=1&_=%s" % int(
+    time.time())  # 获取打开的职位
 
 
 def get_all_user(cookie, page=1):
@@ -127,7 +131,7 @@ def get_user_info(cookie, gid):
     return res
 
 
-def send_invite(cookie, username, jobid='6970297', tips='', invite_time=''):
+def send_invite(cookie, username, jobid, tips='', invite_time=''):
     """
     发送面试邀请
     :param cookie: 相当于token
@@ -206,6 +210,23 @@ def get_jobid(cookie, jobname):
        :return: 联系人id/None
        """
     res = None
+    if jobname:
+        job_name = jobname.lower()
+        try:
+            resp = requests.get(url_get_job_id, cookies=cookie).json()
+            if str(resp.get("rescode", 0)) == '1':
+                html = resp.get('html', "")
+                soup = BeautifulSoup(html, "html.parser")
+                jobs_html = soup.find_all("tr")
+                for job in jobs_html:
+                    name = job.find("div", {"class": "position-title"}).find("a").string.lower()
+                    if name == job_name:
+                        res = job.find("a", {"class": "link-chat"}).get("data-jobid")
+                        break
+                    if not res and job_name in name:
+                        res = job.find("a", {"class": "link-chat"}).get("data-jobid")
+        except Exception as e:
+            print('get_jobid error:%s', str(e))
     return res
 
 
@@ -214,14 +235,21 @@ def wx_send_boss_invite(args):
     if not args:
         res = 'BOSS直聘发送面试邀请未获得参数'
     else:
+        cookie = {'t': 'fPQirgQj9lzoRs', 'wt': 'fPQirgQj9lzoRs'}
         params = args.split(' ')
-        res = send_invite(cookie={
-            't': 'fPQirgQj9lzoRs',
-            'wt': 'fPQirgQj9lzoRs'
-        }, username=params[0], invite_time=params[1] if len(params) > 1 and params[1] != '' else None,
-            tips=params[2] if len(params) > 2 and params[2] != '' else None)
-    return res + '\n参数格式[用户名 时间或者默认7天后的此时 提示语或者默认发送笔试邀请提示]\n' \
-                 '示例[test 08231515 诚邀面试]' if res else "BOSS直聘面试邀请发送成功"
+        if len(params) >= 2:
+            job_id = get_jobid(cookie, params[0])
+            if job_id:
+                res = send_invite(cookie=cookie, jobid=job_id,
+                                  username=params[1],
+                                  invite_time=params[2] if len(params) > 2 and params[2] != '' else None,
+                                  tips=params[3] if len(params) > 3 and params[3] != '' else None)
+            else:
+                res = "BOSS直聘发送面试邀请未查到[{}]职位".format(params[0])
+        else:
+            res = "BOSS直聘发送面试邀请参数不足"
+    return res + '\n参数格式[职位名 用户名 时间或者默认7天后的此时 提示语或者默认发送笔试邀请提示]\n' \
+                 '示例[android test 08231515 诚邀面试]' if res else "BOSS直聘面试邀请发送成功"
 
 
 if __name__ == '__main__':
@@ -229,5 +257,6 @@ if __name__ == '__main__':
         't': 'fPQirgQj9lzoRs',
         'wt': 'fPQirgQj9lzoRs'
     }
-    print(send_invite(m_cookie, '王博龙', invite_time='08231717'))
+    # print(send_invite(m_cookie, '王博龙', invite_time='08231717'))
     # print(get_all_user(m_cookie, 1))
+    print(get_jobid(cookie=m_cookie, jobname="ios"))
