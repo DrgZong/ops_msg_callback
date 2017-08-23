@@ -83,11 +83,13 @@ class Edaice():
         """
         res = None
         if name:
+            name = name.lower()
             for paper in self.get_papers():
-                if name == paper.get("testPaperName", ""):
+                paper_name = paper.get("testPaperName", "").lower()
+                if name == paper_name:
                     res = paper.get("testPaperId")
                     break
-                if not res and name in paper.get("testPaperName", ""):
+                if not res and name in paper_name:
                     res = paper.get("testPaperId")
         return res
 
