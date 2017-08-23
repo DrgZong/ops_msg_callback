@@ -155,7 +155,7 @@ def send_invite(cookie, username, jobid='6970297', tips='', invite_time=''):
                 return res
 
         else:
-            date = str((now + datetime.timedelta(days=1)).date())
+            date = str((now + datetime.timedelta(days=7)).date())
             hour = now.hour
             minute = now.minute
         para = {'jobid': jobid, 'date': date,

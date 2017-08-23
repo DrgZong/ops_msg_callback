@@ -102,12 +102,12 @@ def wx_send_test(args):
             res = 'E待测发送笔试邀请参数不足'
         else:
             res = Edaice('balloon@pingwest.com', 'Pingwest2012') \
-                .create_test(test_name=params[0], email=params[1], user_name=params[2], phone=params[3],
+                .create_test(test_name=params[0], email=params[3], user_name=params[1], phone=params[2],
                              days=params[4] if len(params) > 4 and params[4] else '7')
     else:
         res = 'E待测发送笔试邀请未获得参数'
-    return res + '\n参数格式[试卷名(模糊) 邮箱  姓名 电话 有效期或者默认7天]\n' \
-                 '示例[Android xxx@163.com test 13313121415 3]' if res else "笔试邀请发送成功"
+    return res + '\n参数格式[试卷名(模糊) 姓名 电话 邮箱 有效期或者默认7天]\n' \
+                 '示例[Android xxx@163.com name 13313121415 3]' if res else "笔试邀请发送成功"
 
 
 if __name__ == '__main__':

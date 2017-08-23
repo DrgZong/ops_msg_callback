@@ -35,7 +35,7 @@ class MsgCallback(BaseHandler):
             print(text)
             # 模板样式待定，先实现一种:发送简历邀请及E待测试题
             if msg.get("atSelf", False) and isinstance(text, str) and "@all" not in text.lower():
-                text_list = text.split("\n")
+                text_list = text.replace('\u2005', ' ').split("\n")
                 task_name = list(filter(None, text_list[0].split(" ")))[1].split(".")
                 fun = task.get(task_name[0].lower(), {}).\
                     get(task_name[1] if len(task_name) > 1 and task_name[1] else 'default')
