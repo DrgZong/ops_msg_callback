@@ -220,7 +220,9 @@ def wx_send_boss_invite(args):
             'wt': 'fPQirgQj9lzoRs'
         }, username=params[0], invite_time=params[1] if len(params) > 1 and params[1] != '' else None,
             tips=params[2] if len(params) > 2 and params[2] != '' else None)
-    return res if res else "BOSS直聘面试邀请发送成功"
+    return res if res + '\n参数格式[用户名 时间或者默认明日此时 提示语或者默认发送笔试邀请提示]\n' \
+                        '示例[test 08231515 诚邀面试]'\
+        else "BOSS直聘面试邀请发送成功"
 
 
 if __name__ == '__main__':

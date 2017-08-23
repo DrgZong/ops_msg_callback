@@ -106,7 +106,7 @@ def wx_send_test(args):
                              days=params[2] if len(params) > 2 and params[2] else '7')
     else:
         res = 'E待测发送笔试邀请未获得参数'
-    return res if res else "笔试邀请发送成功"
+    return res if res + '\n参数格式[试卷名(模糊) 邮箱 有效期或者默认7天]\n示例[Android xxx@163.com]' else "笔试邀请发送成功"
 
 
 if __name__ == '__main__':
