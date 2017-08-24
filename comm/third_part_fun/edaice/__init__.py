@@ -10,6 +10,8 @@ import json
 import requests
 import hashlib
 
+from pw_logger import m_logger
+
 url_login = "https://www.edaice.com/mcgi/user/company_login"  # 登录
 url_get_paper = "https://www.edaice.com/mcgi/topic/get_test_papers"  # 获取所有面试题
 url_create_test = "https://www.edaice.com/mcgi/test/create_test"
@@ -66,6 +68,7 @@ class Edaice():
                         "isMonitor": is_moniter, "localTime": begin,
                         "activeTimeBegin": begin, "activeTimeEnd": end[: end.rfind(".")]}
                 r = requests.post(url_create_test, data=para).json()
+                m_logger.info("E待测网络返回结果：%s", r)
                 if str(r.get("errcode", -1)) != '0':
                     res = json.dumps(r)
             except Exception as e:
@@ -96,6 +99,7 @@ class Edaice():
 
 # 以下是微信反向操作的方法，操作成功返回None否则返回错误信息
 def wx_send_test(args):
+    m_logger.info("发送E待测笔试邀请")
     if args:
         params = args.split(' ')
         if len(params) < 4:
@@ -106,6 +110,7 @@ def wx_send_test(args):
                              days=params[4] if len(params) > 4 and params[4] else '7')
     else:
         res = 'E待测发送笔试邀请未获得参数'
+    m_logger.info("发送E待测笔试邀请结果:%s", res)
     return res + '\n参数格式[试卷名(模糊) 姓名 电话 邮箱 有效期或者默认7天]\n' \
                  '示例[Android name 13313121415 xxx@163.com 3]' if res else "笔试邀请发送成功"
 

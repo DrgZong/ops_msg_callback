@@ -12,6 +12,8 @@ import time
 
 from bs4 import BeautifulSoup
 
+from pw_logger import m_logger
+
 url_all = "https://www.zhipin.com/chat/userList.json?page={page}&_=%s" % int(time.time())  # 全部联系人
 url_new = "https://www.zhipin.com/chat/resumedirectList.json?page={page}&_=%s" % int(time.time())  # 新联系人
 url_talking = "https://www.zhipin.com/chat/userfilterlist.json?page=0&status=6&origin=-1&jobid=-1&rank=1&salary=0&experience=0&degree=0&_=%s" % int(
@@ -167,6 +169,7 @@ def send_invite(cookie, username, jobid, tips='', invite_time=''):
                 'uid': gid, 'sendmsg': '0'}
         try:
             resp = requests.post(url_send_invite, cookies=cookie, data=para).json()
+            m_logger.info("面试邀请网络返回:%s", resp)
             if resp.get("rescode", 0) != 1:
                 res = resp.get('resmsg', '未知错误')
         except Exception as e:
@@ -232,6 +235,7 @@ def get_jobid(cookie, jobname):
 
 # 以下是微信反向操作的方法，操作成功返回None否则返回错误信息
 def wx_send_boss_invite(args):
+    m_logger.info("发送BOSS直聘面试邀请")
     if not args:
         res = 'BOSS直聘发送面试邀请未获得参数'
     else:
@@ -248,6 +252,7 @@ def wx_send_boss_invite(args):
                 res = "BOSS直聘发送面试邀请未查到[{}]职位".format(params[0])
         else:
             res = "BOSS直聘发送面试邀请参数不足"
+    m_logger.info("发送BOSS直聘面试邀请结果：%s", res)
     return res + '\n参数格式[职位名 用户名 时间或者默认7天后的此时 提示语或者默认发送笔试邀请提示]\n' \
                  '示例[android test 08231515 诚邀面试]' if res else "BOSS直聘面试邀请发送成功"
 
