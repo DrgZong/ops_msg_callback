@@ -32,9 +32,9 @@ class MsgCallback(BaseHandler):
         try:
             msg = json.loads(weslack_decrypt_dict(self.request.body))
             text = msg.get("text", "xxx")
-            print(text)
             # 模板样式待定，先实现一种:发送简历邀请及E待测试题
             if msg.get("atSelf", False) and isinstance(text, str) and "@all" not in text.lower():
+                m_logger.info("手动操作消息：%s", text)
                 text_list = text.replace('\u2005', ' ').split("\n")
                 task_name = list(filter(None, text_list[0].split(" ")))[1].split(".")
                 fun = task.get(task_name[0].lower(), {}).\
@@ -43,6 +43,8 @@ class MsgCallback(BaseHandler):
                     res = fun(text_list[1] if len(text_list) > 1 else None)
                 # else:
                 #     res = 'I do not support this operate'
+            else:
+                print(text)
         except Exception as e:
             m_logger.info('消息格式错误：%s', str(e))
         return "" if not res else res
