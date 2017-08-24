@@ -145,6 +145,7 @@ def send_invite(cookie, username, jobid, tips='', invite_time=''):
     """
     res = None
     gid = str(get_userid(cookie, username))
+    print(gid)
     if jobid and gid:
         if not tips:
             tips = "给你邮箱发了一个在线笔试邀请，请于邀请时间之前做完，评卷结束后我们会通知你后续面试的时间"
