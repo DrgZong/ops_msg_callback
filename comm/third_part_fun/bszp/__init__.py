@@ -146,7 +146,7 @@ def send_invite(cookie, username, jobid, tips='', invite_time=''):
     res = None
     gid = str(get_userid(cookie, username))
     print(gid)
-    if jobid and gid:
+    if jobid and gid and gid != 'None':
         if not tips:
             tips = "给你邮箱发了一个在线笔试邀请，请于邀请时间之前做完，评卷结束后我们会通知你后续面试的时间"
         now = datetime.datetime.now()
@@ -265,4 +265,5 @@ if __name__ == '__main__':
     }
     # print(send_invite(m_cookie, '王博龙', invite_time='08231717'))
     # print(get_all_user(m_cookie, 1))
-    print(get_jobid(cookie=m_cookie, jobname="ios"))
+    # print(get_jobid(cookie=m_cookie, jobname="ios"))
+    print(str(None))
