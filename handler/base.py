@@ -20,8 +20,9 @@ class BaseHandler(tornado.web.RequestHandler):
         pass
 
     def v_finish(self, *arg, **argv):
-        print('total time = %s' % (time.time() - self.request._start_time))
         if arg:
+            if time.time() - self.request._start_time > 2:
+                print('超时')
             self.finish(arg[0])
         else:
             self.finish("")
