@@ -16,3 +16,12 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def data_received(self, chunk):
         pass
+
+    def v_finish(self, *arg, **argv):
+        if arg:
+            if self.request._finish_time - self.request._start_time > 2:
+                pass
+            else:
+                self.finish(arg[0])
+        else:
+            self.finish("")

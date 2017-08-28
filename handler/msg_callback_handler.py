@@ -24,7 +24,7 @@ class MsgCallback(BaseHandler):
     @tornado.gen.coroutine
     def post(self):
         args = yield self._post()
-        self.finish(args)
+        self.v_finish(args)
 
     @run_on_executor
     def _post(self):
