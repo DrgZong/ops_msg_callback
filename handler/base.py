@@ -18,10 +18,10 @@ class BaseHandler(tornado.web.RequestHandler):
         pass
 
     def v_finish(self, *arg, **argv):
+        print(self.request._finish_time)
+        print(self.request._start_time)
+        print(type(self.request._start_time))
         if arg:
-            if self.request._finish_time - self.request._start_time > 2:
-                pass
-            else:
-                self.finish(arg[0])
+            self.finish(arg[0])
         else:
             self.finish("")
