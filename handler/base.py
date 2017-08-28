@@ -29,7 +29,7 @@ class BaseHandler(tornado.web.RequestHandler):
             self.do_post()
         except Exception as e:
             m_logger.info('消息格式错误：%s', str(e))
-        self.v_finish("")
+            self.v_finish("")
 
     def do_post(self):
         pass
