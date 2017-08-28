@@ -267,11 +267,13 @@ if __name__ == '__main__':
     # print(get_all_user(m_cookie, 1))
     # print(get_jobid(cookie=m_cookie, jobname="ios"))
     # print(str(None))
-    text = """@WeSlack客服机器人\u2005boss\rAndroid 宗志龙"""
+    text = """@WeSlack客服机器人 edaice
+产品 瞿秋晨 18678200082  491030748@qq.com  7"""
     text_list = text.replace('\u2005', ' ').replace('\r', ' ').split("\n")
     print(text_list)
     task_name = list(filter(None, text_list[0].split(" ")))[1].split(".")
     print(task_name)
-    fun = {"boss": {"default": "test"}}.get(task_name[0].lower(), {}). \
+    fun = {"edaice": {"default": "test"}}.get(task_name[0].lower(), {}). \
         get(task_name[1] if len(task_name) > 1 and task_name[1] else 'default')
-    print(fun)
+    params = text_list[1].split(' ')
+    print(params)

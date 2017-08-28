@@ -75,7 +75,14 @@ class Edaice():
                 res = str(e)
                 print('create_test error:', str(e))
         else:
-            res = "E待测发送笔试题缺失参数" + ",未找到对应试卷" if not paper_id else ""
+            temp = ''
+            if not paper_id:
+                temp = '未找到对应试卷'
+            if not email:
+                temp = '未获得邮箱'
+            if not test_name:
+                temp = '未获得邀请人姓名'
+            res = "E待测发送笔试题缺失参数" + temp
         return res
 
     def get_paper_id(self, name):
