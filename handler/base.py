@@ -3,10 +3,14 @@
 '''
     handler父类
 '''
+import json
 from concurrent.futures import ThreadPoolExecutor
 
 import time
 import tornado.web
+
+from comm.weslack_fun import weslack_decrypt_dict, send_wx_msg
+from pw_logger import m_logger
 
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -19,10 +23,23 @@ class BaseHandler(tornado.web.RequestHandler):
     def data_received(self, chunk):
         pass
 
-    def v_finish(self, *arg, **argv):
-        if arg:
+    def post(self):
+        try:
+            self.msg = json.loads(weslack_decrypt_dict(self.request.body))
+            self.do_post()
+        except Exception as e:
+            m_logger.info('消息格式错误：%s', str(e))
+        self.v_finish("")
+
+    def do_post(self):
+        pass
+
+    def v_finish(self, ret):
+        if ret:
             if time.time() - self.request._start_time > 2:
-                print('超时')
-            self.finish(arg[0])
+                if self.msg:
+                    send_wx_msg(ret, self.msg.get("Username", self.msg.get("isgroup")))
+            else:
+                self.finish(ret)
         else:
             self.finish("")

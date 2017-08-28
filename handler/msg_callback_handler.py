@@ -22,18 +22,17 @@ class MsgCallback(BaseHandler):
 
     @tornado.web.asynchronous
     @tornado.gen.coroutine
-    def post(self):
+    def do_post(self):
         args = yield self._post()
-        self.v_finish(args)
+        self.v_finish(args[0])
 
     @run_on_executor
     def _post(self):
         res = None
         try:
-            msg = json.loads(weslack_decrypt_dict(self.request.body))
-            text = msg.get("text", "xxx")
+            text = self.msg.get("text", "xxx")
             # 模板样式待定，先实现一种:发送简历邀请及E待测试题
-            if msg.get("atSelf", False) and isinstance(text, str) and "@all" not in text.lower():
+            if self.msg.get("atSelf", False) and isinstance(text, str) and "@all" not in text.lower():
                 m_logger.info("手动操作消息：%s", text)
                 text_list = text.replace('\u2005', ' ').replace('\r', '\n').split("\n")
                 task_name = list(filter(None, text_list[0].split(" ")))[1].split(".")
