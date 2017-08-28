@@ -4,6 +4,8 @@
     handler父类
 '''
 from concurrent.futures import ThreadPoolExecutor
+
+import time
 import tornado.web
 
 
@@ -17,12 +19,8 @@ class BaseHandler(tornado.web.RequestHandler):
     def data_received(self, chunk):
         pass
 
-    def on_finish(self):
-        self.total_time = self.request._finish_time - self.request._start_time
-        print(self.total_time)
-
     def v_finish(self, *arg, **argv):
-        print('v_finish')
+        print('total time = %s' % (time.time() - self.request._start_time*1000))
         if arg:
             self.finish(arg[0])
         else:
