@@ -37,12 +37,15 @@ def create_new_card(para, auth):
     :return:
     """
     res = None
-    if para:
+    if para and auth:
         trello_cli = trell_client(auth.get("trello"))
         if trello_cli:
-            trello_cli.get_board()
+            print(trello_cli.list_boards(board_filter='open'))
         else:
-            res = 'trello新建卡片失败，未获得授权信息'
+            res = 'trello新建卡片失败，授权信息错误'
     else:
-        res = 'trello新建卡片未获得参数\n参数格式[看板名 列表名 卡片名 卡片内容]\n示例[weslack todo new_task test]'
+        if not auth:
+            res = 'trello新建卡片失败，未获得授权信息'
+        else:
+            res = 'trello新建卡片未获得参数\n参数格式[看板名 列表名 卡片名 卡片内容]\n示例[weslack todo new_task test]'
     return res

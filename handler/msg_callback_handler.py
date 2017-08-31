@@ -10,6 +10,7 @@ import tornado.gen
 import tornado.web
 from tornado.concurrent import run_on_executor
 
+from comm.db_fun import get_user_auth
 from comm.weslack_fun import weslack_decrypt_dict
 from handler.base import BaseHandler
 from msg_callback_config import task
@@ -33,13 +34,14 @@ class MsgCallback(BaseHandler):
             text = self.msg.get("text", "xxx")
             # 模板样式待定，先实现一种:发送简历邀请及E待测试题
             if self.msg.get("atSelf", False) and isinstance(text, str) and "@all" not in text.lower():
+                auth = get_user_auth(self.msg.get("chatroomName", ""))
                 m_logger.info("手动操作消息：%s", text)
                 text_list = text.replace('\u2005', ' ').replace('\r', '\n').split("\n")
                 task_name = list(filter(None, text_list[0].split(" ")))[1].split(".")
                 fun = task.get(task_name[0].lower(), {}).\
                     get(task_name[1] if len(task_name) > 1 and task_name[1] else 'default')
                 if fun:
-                    res = fun(text_list[1] if len(text_list) > 1 else None, self.auth)
+                    res = fun(text_list[1] if len(text_list) > 1 else None, auth)
                 # else:
                 #     res = 'I do not support this operate'
             else:

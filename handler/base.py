@@ -9,7 +9,6 @@ from concurrent.futures import ThreadPoolExecutor
 import time
 import tornado.web
 
-from comm.db_fun import get_user_auth
 from comm.weslack_fun import weslack_decrypt_dict, send_wx_msg
 from pw_logger import m_logger
 
@@ -27,7 +26,6 @@ class BaseHandler(tornado.web.RequestHandler):
     def post(self):
         try:
             self.msg = json.loads(weslack_decrypt_dict(self.request.body))
-            self.auth = get_user_auth(self.msg.get("chatroomName", ""))
             self.do_post()
         except Exception as e:
             m_logger.info('消息格式错误：%s', str(e))
