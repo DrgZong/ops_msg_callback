@@ -235,7 +235,7 @@ def get_jobid(cookie, jobname):
 
 
 # 以下是微信反向操作的方法，操作成功返回None否则返回错误信息
-def wx_send_boss_invite(args):
+def wx_send_boss_invite(args, auth):
     m_logger.info("发送BOSS直聘面试邀请")
     if not args:
         res = 'BOSS直聘发送面试邀请未获得参数'

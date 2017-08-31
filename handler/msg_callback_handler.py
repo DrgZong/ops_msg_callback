@@ -39,7 +39,7 @@ class MsgCallback(BaseHandler):
                 fun = task.get(task_name[0].lower(), {}).\
                     get(task_name[1] if len(task_name) > 1 and task_name[1] else 'default')
                 if fun:
-                    res = fun(text_list[1] if len(text_list) > 1 else None)
+                    res = fun(text_list[1] if len(text_list) > 1 else None, self.auth)
                 # else:
                 #     res = 'I do not support this operate'
             else:

@@ -105,7 +105,7 @@ class Edaice():
 
 
 # 以下是微信反向操作的方法，操作成功返回None否则返回错误信息
-def wx_send_test(args):
+def wx_send_test(args, auth):
     m_logger.info("发送E待测笔试邀请")
     if args:
         params = args.split(' ')
