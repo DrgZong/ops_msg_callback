@@ -1,5 +1,5 @@
 from comm.third_part_fun.bszp import wx_send_boss_invite
-from comm.third_part_fun.edaice import wx_send_test
+from comm.third_part_fun.edaice import wx_send_test, get_all_papers
 from comm.third_part_fun.trello import create_new_card
 
 task = {
@@ -10,9 +10,10 @@ task = {
     "edaice": {
         "test": wx_send_test,
         "default": wx_send_test,  # 发送e待测笔试 格式为【试卷名(模糊) 用户 电话 邮箱 有效期或者不写】
+        "all": get_all_papers,
     },
     "trello": {
-        "default": create_new_card,  # 创建trello新卡片 格式为【试卷名(模糊)|邮箱|有效期或者不屑】
+        "default": create_new_card,  # 创建trello新卡片 格式为【】
     }
 }
 

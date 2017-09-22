@@ -122,6 +122,14 @@ def wx_send_test(args, auth):
                  '示例[Android name 13313121415 xxx@163.com 3]' if res else "笔试邀请发送成功"
 
 
+def get_all_papers(args, auth):
+    m_logger.info("获取E待测所有试卷")
+    res = list(paper.get("testPaperName", "") for paper
+               in Edaice('balloon@pingwest.com', 'Pingwest2012').get_papers())
+
+    return ",".join(res)
+
+
 if __name__ == '__main__':
     ed = Edaice(None, None, "7l29k4rm8i1ezrzon07n42tl7kyx7wjcn3odk24ab6z2sd4yur")
     # print(ed.get_paper_id("题"))

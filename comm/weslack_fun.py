@@ -9,9 +9,8 @@ import json
 import requests
 from cryptography.fernet import Fernet
 
-secret = '30rWQkOzH0JBEOenusV31pGtKhhBcn2mMZB165bpkYI='  # onlinetest 的密匙
-task_man_url = "https://web.weslack.cn/wx_msg"
-cookie = {"weslackuser": "2|1:0|10:1503050447|11:weslackuser|32:b25saW5ldGVzdEBwaW5nd2VzdC5jb20=|60044c41f30c11380d91fc3159889330337372836af27984ce96c583c5a6903d"}
+from weslack_config import secret, task_man_url, cookie
+
 
 def weslack_decrypt_dict(encrypt_str):
     """
