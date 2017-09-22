@@ -7,9 +7,12 @@
 import json
 
 import requests
+import time
 from cryptography.fernet import Fernet
 
-from weslack_config import secret, task_man_url, cookie
+from weslack_config import secret, task_man_url, login_url
+
+cookie_dic = {}
 
 
 def weslack_decrypt_dict(encrypt_str):
@@ -40,11 +43,24 @@ def weslack_encrypt_dict(d):
     return f.encrypt(msg_str).decode()  # 经过加密并转换为字符串
 
 
+def get_cookie():
+    global cookie_dic
+    if cookie_dic and cookie_dic.get("expired") >= int(time.time()):
+        res = cookie_dic.get("cookie")
+    else:
+        res = requests.post(login_url).cookies.get("weslackuser")
+        cookie_dic = {
+            "cookie": res,
+            "expired": int(time.time() + 9 * 24 * 3600)
+        }
+    return res
+
+
 def send_wx_msg(text, to, is_group=True):
     res = None
     if text and to:
         data = {"text": text, "username": to, "isgroup": is_group}
-        res = requests.post(task_man_url, cookies=cookie, data={
+        res = requests.post(task_man_url, cookies={"weslackuser": get_cookie()}, data={
             "descpt": weslack_encrypt_dict(data),
         }).text
     return res
